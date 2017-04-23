@@ -1,1 +1,4 @@
-# my_bash_config
+#My dot Files configurations 
+
+## Unix customized configuration files and personal nvim/vim (.vimrc) settings
+
