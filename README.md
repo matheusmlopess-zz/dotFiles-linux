@@ -1,4 +1,4 @@
-#My dot Files configurations 
+##My dot Files configurations 
 
-## Unix customized configuration files and personal nvim/vim (.vimrc) settings
+# Unix customized configuration files and personal nvim/vim (.vimrc) settings
 
