@@ -117,7 +117,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#-------------------------------------
+
+# Cunstum stuff ... 
 #----------------------------------------
 #red='\e[1;31m%s\e[0m\n'
 #green='\e[1;32m%s\e[0m\n'
@@ -133,9 +134,9 @@ blu=$'\e[1;34m'
 mag=$'\e[1;35m'
 cyn=$'\e[1;36m'
 end=$'\e[0m'
-rnd=$'\e[38;05;'
 
-Color_Off='\033[0m'       # Text Reset
+rnd=$'\e[38;05;'
+Color_Off='\033[0m'    
 
 _restartWifiHrdwar(){
 	#set -x
@@ -152,32 +153,32 @@ _restartWifiHrdwar(){
 	       #sudo ifconfig 'wlp3s0' down
 	       #sudo ifconfig 'wlp3s0' up
 	              #sleep 0.257
-		      echo "Wifi HW turning off ..."
+		      echo "Wifi HW: Turning off ..."
 		      sudo iwconfig 'wlp3s0' txpower off
-		      echo "Wifi HW turning on!"
+		      echo "Wifi HW: turning on!"
 		      sudo iwconfig 'wlp3s0' txpower auto 
 		             #sleep 0.25
 			     #sudo rfkill block wifi
 			     #sudo rfkill unblock wifi
 			            sleep 0.25
 				    sudo iwconfig 'wlp3s0' power off
-				           echo "Restatrting NetworkManager ..."
+				           echo "Restarting NetworkManager ..."
 					   sudo systemctl restart NetworkManager
-					   echo "NetworkManager restored ..."
+					   echo "NetworkManager on! ..."
 					          #sleep 0.25
 						  #sudo systemctl restart NetworkManager
 						  #set +x
  }
 
 
+# Virtualenv configuration
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/.virtualenvs/pythonProjects/
 export VIRTUALENVWRAPPER_SCRIPT=~/virtualenvwrapper.sh
-
 source /home/..../virtualenvwrapper.sh
 
 
-
+# Aliases
 alias _bashrc='nvim ~/.bashrc'
 #alias l='ls -al'
 #alias ll='ls .?*'
@@ -194,6 +195,7 @@ alias editcmd='nvim ~/Desktop/dotFiles/commands.txt'
 alias rsetcolor='echo ${end}'
 alias cmt='git commit -m'
 
+#custom alias
 cd(){    
 	printf "\n"
 	 echo ${yel}........................................................................ ${end}
