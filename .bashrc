@@ -1,7 +1,160 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+# ~/.bashrc: executed by bash(1) for non-login shellsdd.
+#----------------------------------------------------------------------
+#                                CustoM
+#----------------------------------------------------------------------
 
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# supressing pushd and popd the default "print stack" when called 
+
+pushd(){ 
+         command pushd $@ > /dev/null
+}
+popd() {
+         command popd $@ > /dev/null   
+}
+
+pkg_status(){
+#dpkg-query -W -f='${Status}' MYPACKAGE | grep -q -P '^install ok installed$'; echo $?
+#VAL=$(dpkg-query -W -f='${Status}' $@ 2>/dev/null | grep -c "ok installed")
+#echo $VAL
+
+			XCLIP_CHK=0;
+#Passing stderr (2) over "-v" pipe along with stdout (1) by redirecting the stderr stream (file descriptor #2) to stdout (file descriptor #1)	
+			command -v $@ >/dev/null 2>&1 || { XCLIP_CHK=1;}
+			if [ $XCLIP_CHK -eq 0 ];
+			then
+				apt-cache policy xclip
+				echo achei o xclip
+			#	apt-get install xclip;
+			else
+				echo $XCLIP_CHK
+			fi
+
+}
+  red=$'\e[1;31m'
+  grn=$'\e[1;32m'
+  yel=$'\e[1;33m'
+  blu=$'\e[1;34m'
+  mag=$'\e[1;35m'
+  cyn=$'\e[1;36m'
+  end=$'\e[0m'
+  rnd=$'\e[38;05;'
+  Color_Off='\033[0m'  
+
+
+
+# salva conteudo do clipboar em pasta dedicada --> ~/Desktop/dotFiles
+cmd(){
+	# init function: creat cmd folder the first time cmd() is called.
+	pushd ~/Desktop;
+	if [ ! -d ~/Desktop/dotFiles ]; then 
+		mkdir dotFiles
+			cd dotFiles;
+			echo " " > commands.txt
+		echo "dotFiles directory not found... & Created in `$(pwd)`"
+		git clone https://github.com/matheusmlopess/dotFiles-linux.git .
+		cd dotFiles && ls -laF;
+		return 1;
+	else
+		cd dotFiles/dotFiles-linux
+	fi
+
+   command ls -a;
+   NUMBER=$[ ( $RANDOM % 255 )  + 1 ]
+   VAR=$@;
+
+	if [[ -z $VAR ]]; then 
+		printf "\n"
+		echo ${yel} 
+		xclip -o;
+        	echo  ${end}
+		printf "\n"
+
+	CONTEUDO=$(xclip -o);
+        echo ${rnd}${NUMBER}m $CONTEUDO  >> commands.txt
+	
+else
+        echo ${rnd}${NUMBER}m $@  >> commands.txt
+fi
+popd;
+}
+
+
+txt(){
+	# init function: creat text folder the first time txt() is called.
+	pushd ~/Desktop;
+	if [ ! -d ~/Desktop/txts ]; then 
+		mkdir txts
+		echo "Text directory not found... Creating folder and appling permissions"
+		sudo chmod 700 txts
+		echo TEXT files directory created.
+		return 1;
+	else
+		cd txts
+	fi
+	
+	printf "\n"
+	VAR=$@;
+if [[ -z $VAR ]]; then
+        VAR=$(xclip -o);
+	echo ${yel}________________________________________________________________________ 
+		printf "\n"
+			xclip -o;
+		printf "\n"
+	echo ________________________________________________________________________ ${end}
+	printf "\n"
+		ls -a | grep ".txt";
+	printf "\n"
+		read -p "which .txt file?${end} ${cyn}(or just) type a name: ${end}:" -r nome;
+	xclip -o >> $nome.txt;
+else 
+	echo ${yel}________________________________________________________________________
+	printf "\n"
+		echo $VAR 
+	printf "\n"
+	echo ________________________________________________________________________ ${end}
+	printf "\n"
+		ls -a | grep ".txt";
+	printf "\n"
+		read -p "which .txt file?${end} ${cyn}(or just) type a name: ${end}:" -r nome;
+	echo $VAR >> $nome.txt;
+fi
+	printf "\n"
+	popd;
+}
+
+
+# First terminal run 
+ 
+	pushd ~/Desktop;
+	if [ ! -d ~/Desktop/dotFiles ]; then
+	# Redirecting stdrr over stdout 
+		git --version 2>&1 > /dev/null
+			GIT_CHK=$?
+		 	if [ $GIT_CHK -eq 0 ]; then
+		    		sudo apt-get install git-all;	
+		 	fi
+
+			XCLIP_CHK=0;
+			command -v xclip >/dev/null 2>&1 || { XCLIP_CHK=1;}
+			if [ $XCLIP_CHK -eq 0 ];
+			then
+				apt-cache policy xclip
+			else
+				echo to continue please install xclip
+				sudo apt-get install xclip
+			fi
+		cmd
+	fi
+
+	if [ ! -d ~/Desktop/txts ]; then
+		txt
+	fi
+	popd;
+
+
+#-----------------------------------------------------------------------
+#custom end | ----------------------------------------------------------
+#-----------------------------------------------------------------------
 
 # If not running interactively, don't do anything
 case $- in
@@ -79,19 +232,10 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
-
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -117,26 +261,41 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#----------------------------------------------------------------------
+#                              CustoM
+#----------------------------------------------------------------------
 
-# Cunstum stuff ... 
-#----------------------------------------
-#red='\e[1;31m%s\e[0m\n'
-#green='\e[1;32m%s\e[0m\n'
-#yellow='\e[1;33m%s\e[0m\n'
-#blue='\e[1;34m%s\e[0m\n'
-#magenta='\e[1;35m%s\e[0m\n'
-#cyan='\e[1;36m%s\e[0m\n'
+# colored GCC warnings and errors
+# export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-red=$'\e[1;31m'
-grn=$'\e[1;32m'
-yel=$'\e[1;33m'
-blu=$'\e[1;34m'
-mag=$'\e[1;35m'
-cyn=$'\e[1;36m'
-end=$'\e[0m'
 
-rnd=$'\e[38;05;'
-Color_Off='\033[0m'    
+  red=$'\e[1;31m'
+  grn=$'\e[1;32m'
+  yel=$'\e[1;33m'
+  blu=$'\e[1;34m'
+  mag=$'\e[1;35m'
+  cyn=$'\e[1;36m'
+  end=$'\e[0m'
+  rnd=$'\e[38;05;'
+  Color_Off='\033[0m'  
+
+# Overwintering configuração prévia do prompt
+# Custom prompt (PS1) - tmcolor $@ - configura para cor aleatória da palet de 255 cores do xterm/gnome terminal
+tmcolor(){
+	VAR=$@;
+	echo $VAR
+	if [[ -z $VAR ]]; then
+		export PS1='\[\033[01;48m\] ~$(pwd)〉\033[0m \n$ '
+	#fi
+	else	
+	#if [ "$VAR" == "f" ]; then
+		NUM=$[ ( $RANDOM % 37 ) + 30 ];
+	#	echo numero tmcolor $NUM
+		export PS1='$\e${NUM}m~$(pwd)〉${end}\n$ '
+	fi
+#clear
+}
+tmcolor
 
 _restartWifiHrdwar(){
 	#set -x
@@ -153,35 +312,35 @@ _restartWifiHrdwar(){
 	       #sudo ifconfig 'wlp3s0' down
 	       #sudo ifconfig 'wlp3s0' up
 	              #sleep 0.257
-		      echo "Wifi HW: Turning off ..."
+		      echo "Wifi HW turning off ..."
 		      sudo iwconfig 'wlp3s0' txpower off
-		      echo "Wifi HW: turning on!"
+		      echo "Wifi HW turning on!"
 		      sudo iwconfig 'wlp3s0' txpower auto 
 		             #sleep 0.25
 			     #sudo rfkill block wifi
 			     #sudo rfkill unblock wifi
 			            sleep 0.25
 				    sudo iwconfig 'wlp3s0' power off
-				           echo "Restarting NetworkManager ..."
+				           echo "Restatrting NetworkManager ..."
 					   sudo systemctl restart NetworkManager
-					   echo "NetworkManager on! ..."
+					   echo "NetworkManager restored ..."
 					          #sleep 0.25
 						  #sudo systemctl restart NetworkManager
 						  #set +x
  }
 
 
-# Virtualenv configuration
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/.virtualenvs/pythonProjects/
-export VIRTUALENVWRAPPER_SCRIPT=~/virtualenvwrapper.sh
-source /home/..../virtualenvwrapper.sh
+export VIRTUALENVWRAPPER_SCRIPT=$HOME/.local/bin/virtualenvwrapper.sh
+source $HOME/.local/bin/virtualenvwrapper.sh
 
+#/usr/local/bin/virtualenvwrapper.sh
 
-# Aliases
+# ----------------------------- Aliases --------------------------------------
+# ----------------------------------------------------------------------------
+
 alias _bashrc='nvim ~/.bashrc'
-#alias l='ls -al'
-#alias ll='ls .?*'
 alias clc='clear'
 alias _vimrc='vim ~/.vimrc'
 alias _nvimrc='nvim ~/.config/nvim/init.vim'
@@ -194,75 +353,52 @@ alias desk='cd ~/Desktop'
 alias editcmd='nvim ~/Desktop/dotFiles/commands.txt'
 alias rsetcolor='echo ${end}'
 alias cmt='git commit -m'
-
-#custom alias
-cd(){    
-	printf "\n"
-	 echo ${yel}........................................................................ 
-	 command cd $1 && ls -a
-	# printf "History bash: %s\n" "${blu} $OLDPWD ${end}"
-	 echo ${yel}________________________________________________________________________ ${end}
-	# printf "\nHistory bash: %s -to-> %s \n\n" "${blu} $OLDPWD ${end}" "${yel} $(pwd) ${end}"
-	printf "\n"
-}
-
-txt(){
-	pushd ~/Desktop/txts/;
-	printf "\n"
-	VAR=$@;
-if [[ -z $VAR ]]; then
-        VAR=$(xclip -o);
-	echo ${yel}________________________________________________________________________ 
-	xclip -o;
-	echo ________________________________________________________________________ ${end}
-	printf "\n"
-	ls -a | grep ".txt";
-	printf "\n"
-	read -p "which .txt ?${end} ${cyn}(or new txt file name  Ctrl+c to cancel)${end}:" -r nome;
-	xclip -o >> $nome.txt;
-else 
-	echo ${yel}________________________________________________________________________ 
-	echo $VAR
-	echo ________________________________________________________________________ ${end}
-	printf "\n"
-	ls -a | grep ".txt";
-	printf "\n"
-	read -p "which .txt ?${end} ${cyn}(or new txt file name Ctrl+c to cancel)${end}:" -r nome;
-	echo $VAR >> $nome.txt;
-fi
-	printf "\n"
-	popd;
-}
-
-cmd(){
-   pushd /home/../Desktop/dotFiles;
-   command ls;
-   NUMBER=$[ ( $RANDOM % 255 )  + 1 ]
-   echo $NUMBER	
-   echo ${rnd}${NUMBER}m $@  >> commands.txt
-   popd;
-}
+alias pullFoldrs='cd ~/Desktop/gits'
+alias s="git status -s"
+alias _rmbashSwp='rm ~/.local/share/nvim/swap//%home%mrs-magooo%.bashrc.swp'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias rs='resize -s 110 100'
+alias show_icons='~/Desktop > ~/Desktop/.hidden'
+alias hide_icons='rm ~/Desktop/.hidden'
+cd(){	command cd $1 && l && printf "\n"; }
 
 cmdisplay(){
-	pushd /home/.../Desktop/dotFiles;
+	pushd ~/Desktop/dotFiles;
 	cat commands.txt;
 	popd;
 }
 
-tmcolor(){
-	VAR=$@;
-	echo $VAR
-if [[ -z $VAR ]]; then
-	NUM=$[ ( $RANDOM % 37 ) + 30 ];
-	echo número tmcolor $NUM
-	export PS1='${rnd}${NUM}m~$(pwd)〉\n$ \033[00m'
+_ckdir(){
+
+if [ -d "$@" ]; then
+  # Control will enter here if $DIRECTORY exists.
+	ls -a $@
 fi
 
-if [ "$VAR" == "f" ]; then
-	export PS1='${rnd}48m~$(pwd)〉\n$ \033[00m'
-fi
 }
-tmcolor
+
+bashPull(){
+	pushd $HOME;
+	echo "--> Dir:`pwd`"
+	if [ -f ~/.bashrc ]; then
+	    echo "File found!"
+	fi
+
+ 	pushd ~/Desktop/gits/dotFiles-linux;
+		ls -d .?*;
+
+
+
+
+	popd;
+}
+
+bashPush(){
+
+	echo " " 
+}
 
 #eval $(echo "no:global default;fi:normal file;di:directory;ln:symbolic link;pi:named pipe;so:socket;do:door;bd:block device;cd:character device;or:orphan symlink;mi:missing file;su:set uid;sg:set gid;tw:sticky other writable;ow:other writable;st:sticky;ex:executable;"|sed -e 's/:/="/g; s/\;/"\n/g')           
 #{      
@@ -272,3 +408,21 @@ tmcolor
   #  echo -e "\e[${i#*=}m$( x=${i%=*}; [ "${!x}" ] && echo "${!x}" || echo "$x" )\e[m" 
   #done       
 #} bashrc
+
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion                                                                                                                                                                
+fi
+
+
+function_exists() {
+    declare -f -F $1 > /dev/null
+    return $?
+}
+
+for al in `__git_aliases`; do
+    alias g$al="git $al"
+    
+    complete_func=_git_$(__git_aliased_command $al)
+    function_exists $complete_fnc && __git_complete g$al $complete_func
+done
+
