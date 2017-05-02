@@ -30,6 +30,11 @@ pkg_status(){
 			fi
 
 }
+
+# colored GCC warnings and errors
+# export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+
   red=$'\e[1;31m'
   grn=$'\e[1;32m'
   yel=$'\e[1;33m'
@@ -268,16 +273,6 @@ fi
 # colored GCC warnings and errors
 # export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-
-  red=$'\e[1;31m'
-  grn=$'\e[1;32m'
-  yel=$'\e[1;33m'
-  blu=$'\e[1;34m'
-  mag=$'\e[1;35m'
-  cyn=$'\e[1;36m'
-  end=$'\e[0m'
-  rnd=$'\e[38;05;'
-  Color_Off='\033[0m'  
 
 # Overwintering configuração prévia do prompt
 # Custom prompt (PS1) - tmcolor $@ - configura para cor aleatória da palet de 255 cores do xterm/gnome terminal
