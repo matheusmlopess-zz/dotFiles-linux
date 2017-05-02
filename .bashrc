@@ -5,20 +5,21 @@
 
 # supressing pushd and popd the default "print stack" when called 
 
-pushd(){ 
-         command pushd $@ > /dev/null
-}
-popd() {
-         command popd $@ > /dev/null   
-}
+pushd(){       command pushd $@ > /dev/null; }
+popd() {       command popd $@ > /dev/null;  }
 
 pkg_status(){
-#dpkg-query -W -f='${Status}' MYPACKAGE | grep -q -P '^install ok installed$'; echo $?
-#VAL=$(dpkg-query -W -f='${Status}' $@ 2>/dev/null | grep -c "ok installed")
-#echo $VAL
+
+# require sudo permission which sucks!	
+# dpkg-query -W -f='${Status}' MYPACKAGE | grep -q -P '^install ok installed$'; echo $?
+# VAL=$(dpkg-query -W -f='${Status}' $@ 2>/dev/null | grep -c "ok installed")
 
 			XCLIP_CHK=0;
-#Passing stderr (2) over "-v" pipe along with stdout (1) by redirecting the stderr stream (file descriptor #2) to stdout (file descriptor #1)	
+			# dont require sudo permissions
+			# 2>&1 :Passing stderr (2) over "-v" pipe along with stdout (1)
+			# by redirecting the stderr stream (file descriptor #2)
+			# to stdout (file descriptor #1)	
+
 			command -v $@ >/dev/null 2>&1 || { XCLIP_CHK=1;}
 			if [ $XCLIP_CHK -eq 0 ];
 			then
@@ -46,7 +47,6 @@ pkg_status(){
   Color_Off='\033[0m'  
 
 
-
 # salva conteudo do clipboar em pasta dedicada --> ~/Desktop/dotFiles
 cmd(){
 	# init function: creat cmd folder the first time cmd() is called.
@@ -55,8 +55,8 @@ cmd(){
 		mkdir dotFiles
 			cd dotFiles;
 			echo " " > commands.txt
-		echo "dotFiles directory not found... & Created in `$(pwd)`"
-		git clone https://github.com/matheusmlopess/dotFiles-linux.git .
+		echo "dotFiles directory not found... & Created in $(pwd)"
+		git clone https://github.com/matheusmlopess/dotFiles-linux.git 
 		cd dotFiles && ls -laF;
 		return 1;
 	else
@@ -133,10 +133,14 @@ fi
 	pushd ~/Desktop;
 	if [ ! -d ~/Desktop/dotFiles ]; then
 	# Redirecting stdrr over stdout 
-		git --version 2>&1 > /dev/null
-			GIT_CHK=$?
+
+			GIT_CHK=0;
+			command -v git > /dev/null 2>&1 || { GIT_CHK=1;}
 		 	if [ $GIT_CHK -eq 0 ]; then
-		    		sudo apt-get install git-all;	
+				apt-cache policy git 
+			else    
+				echo to continue please install git
+				sudo apt-get install git-all;	
 		 	fi
 
 			XCLIP_CHK=0;
@@ -355,8 +359,8 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias rs='resize -s 110 100'
-alias show_icons='~/Desktop > ~/Desktop/.hidden'
-alias hide_icons='rm ~/Desktop/.hidden'
+alias hide_icons='ls ~/Desktop > ~/Desktop/.hidden'
+alias show_icons='rm ~/Desktop/.hidden'
 cd(){	command cd $1 && l && printf "\n"; }
 
 cmdisplay(){
