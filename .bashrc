@@ -3,7 +3,7 @@
 #                                CustoM
 #----------------------------------------------------------------------
 
-# supressing pushd & popd default "print st
+# supressing pushd & popd default 'print stack'
 
 pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
