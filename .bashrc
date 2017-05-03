@@ -339,7 +339,7 @@ alias py='python'
 alias desk='cd ~/Desktop'
 alias editcmd='nvim ~/Desktop/dotFiles/commands.txt'
 alias rsetcolor='echo ${end}'
-alias cmt='git commit -m'
+cmt(){ command git commit -m "$@" }
 alias pullFoldrs='cd ~/Desktop/gits'
 alias s="git status -s"
 alias _rmbashSwp='rm ~/.local/share/nvim/swap//%home%mrs-magooo%.bashrc.swp'
