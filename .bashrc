@@ -27,16 +27,6 @@ pkg_status(){
 		
 		local qualPacote=$1
 		
-	 #	function myfunc()
-  	 #	{	
-	 #   		local  qualPacote=$1
-	 #      	local  myresult='some value'
-  	 #	    	eval $__resultvar="'$myresult'"
-	 #   	}
-
-	 #  myfunc result
-	 #  echo $result
-
 			local XPKG_CHK=0;
 			# dont require sudo permissions
 			# 2>&1 :Passing stderr (2) over "-v" pipe along with stdout (1)
@@ -58,13 +48,6 @@ pkg_status(){
 				        ;;
 				esac
 			fi
-
-}
-
-
-
-testePass(){
-	pkg_status 'git'	
 
 }
 
@@ -153,29 +136,10 @@ fi
  
 	pushd ~/Desktop;
 	if [ ! -d ~/Desktop/dotFiles ]; then
-	
 	#há thats infinitely better ...	
-			pkg_status 'git'
-			pkg_status 'xclip'
-			
-#			GIT_CHK=0;
-#			command -v git > /dev/null 2>&1 || { GIT_CHK=1;}
-#		 	if [ $GIT_CHK -eq 0 ]; then
-#				apt-cache policy git 
-#			else    
-#				echo to continue please install git
-#				sudo apt-get install git-all;	
-#		 	fi
-#			
-#			XCLIP_CHK=0;
-#			command -v xclip >/dev/null 2>&1 || { XCLIP_CHK=1;}
-#			if [ $XCLIP_CHK -eq 0 ];
-#			then
-#				apt-cache policy xclip
-#			else
-#				echo to continue please install xclip
-#				sudo apt-get install xclip
-#			fi
+		pkg_status 'git'
+		pkg_status 'xclip'
+	
 		cmd
 	fi
 
