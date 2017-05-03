@@ -9,7 +9,6 @@ pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
 
 pkg_status(){
-
 # require sudo permission which sucks!	
 # dpkg-query -W -f='${Status}' MYPACKAGE | grep -q -P '^install ok installed$'; echo $?
 # VAL=$(dpkg-query -W -f='${Status}' $@ 2>/dev/null | grep -c "ok installed")
