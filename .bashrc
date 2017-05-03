@@ -24,28 +24,47 @@ pkg_status(){
 # require sudo permission which sucks!	
 # dpkg-query -W -f='${Status}' MYPACKAGE | grep -q -P '^install ok installed$'; echo $?
 # VAL=$(dpkg-query -W -f='${Status}' $@ 2>/dev/null | grep -c "ok installed")
+		
+		local qualPacote=$1
+		
+	 #	function myfunc()
+  	 #	{	
+	 #   		local  qualPacote=$1
+	 #      	local  myresult='some value'
+  	 #	    	eval $__resultvar="'$myresult'"
+	 #   	}
 
-			XPKG_CHK=0;
+	 #  myfunc result
+	 #  echo $result
+
+			local XPKG_CHK=0;
 			# dont require sudo permissions
 			# 2>&1 :Passing stderr (2) over "-v" pipe along with stdout (1)
 			# by redirecting the stderr stream (file descriptor #2)
 			# to stdout (file descriptor #1)	
-
-			command -v $@ >/dev/null 2>&1 || { XPKG_CHK=1;}
+			echo $qualPacote;
+			command -v $qualPacote >/dev/null 2>&1 || { XPKG_CHK=1;}
 			if [ $XPKG_CHK -eq 0 ];
 			then
-				apt-cache policy xclip
+				apt-cache policy xclip;
 			else	
-				read -r -p "Do you want to continue? [Y/n]? " response
+				read -r -p "Pakage not found... Do you want to install it [Y/n]? " response
 				case "$response" in
 					[yY][eE][sS]|[yY]) 
-						sudo apt-get install $@;
+						sudo apt-get install $qualPacote;
 					;;
 					*)
-						exit 1;
+						exit 1;	
 				        ;;
 				esac
 			fi
+
+}
+
+
+
+testePass(){
+	pkg_status 'git'	
 
 }
 
@@ -134,26 +153,29 @@ fi
  
 	pushd ~/Desktop;
 	if [ ! -d ~/Desktop/dotFiles ]; then
-	# Redirecting stdrr over stdout 
-
-			GIT_CHK=0;
-			command -v git > /dev/null 2>&1 || { GIT_CHK=1;}
-		 	if [ $GIT_CHK -eq 0 ]; then
-				apt-cache policy git 
-			else    
-				echo to continue please install git
-				sudo apt-get install git-all;	
-		 	fi
-
-			XCLIP_CHK=0;
-			command -v xclip >/dev/null 2>&1 || { XCLIP_CHK=1;}
-			if [ $XCLIP_CHK -eq 0 ];
-			then
-				apt-cache policy xclip
-			else
-				echo to continue please install xclip
-				sudo apt-get install xclip
-			fi
+	
+	#há thats infinitely better ...	
+			pkg_status 'git'
+			pkg_status 'xclip'
+			
+#			GIT_CHK=0;
+#			command -v git > /dev/null 2>&1 || { GIT_CHK=1;}
+#		 	if [ $GIT_CHK -eq 0 ]; then
+#				apt-cache policy git 
+#			else    
+#				echo to continue please install git
+#				sudo apt-get install git-all;	
+#		 	fi
+#			
+#			XCLIP_CHK=0;
+#			command -v xclip >/dev/null 2>&1 || { XCLIP_CHK=1;}
+#			if [ $XCLIP_CHK -eq 0 ];
+#			then
+#				apt-cache policy xclip
+#			else
+#				echo to continue please install xclip
+#				sudo apt-get install xclip
+#			fi
 		cmd
 	fi
 
