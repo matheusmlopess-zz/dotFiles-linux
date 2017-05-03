@@ -14,20 +14,26 @@ pkg_status(){
 # dpkg-query -W -f='${Status}' MYPACKAGE | grep -q -P '^install ok installed$'; echo $?
 # VAL=$(dpkg-query -W -f='${Status}' $@ 2>/dev/null | grep -c "ok installed")
 
-			XCLIP_CHK=0;
+			XPKG_CHK=0;
 			# dont require sudo permissions
 			# 2>&1 :Passing stderr (2) over "-v" pipe along with stdout (1)
 			# by redirecting the stderr stream (file descriptor #2)
 			# to stdout (file descriptor #1)	
 
-			command -v $@ >/dev/null 2>&1 || { XCLIP_CHK=1;}
+			command -v $@ >/dev/null 2>&1 || { XPKG_CHK=1;}
 			if [ $XCLIP_CHK -eq 0 ];
 			then
 				apt-cache policy xclip
-				echo achei o xclip
-			#	apt-get install xclip;
-			else
-				echo $XCLIP_CHK
+			else	
+				read -r -p "Do you want to continue? [Y/n]? " response
+				case "$response" in
+					[yY][eE][sS]|[yY]) 
+						sudo apt-get install $@;
+					;;
+					*)
+						exit 1;
+				        ;;
+				esac
 			fi
 
 }
@@ -78,7 +84,7 @@ cmd(){
         echo ${rnd}${NUMBER}m $CONTEUDO  >> commands.txt
 	
 else
-        echo ${rnd}${NUMBER}m $@  >> commands.txt
+        echo ${rnd}${NUMBER}m $@ ${end} >> commands.txt
 fi
 popd;
 }
