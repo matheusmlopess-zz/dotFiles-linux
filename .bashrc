@@ -3,7 +3,7 @@
 #                                CustoM
 #----------------------------------------------------------------------
 
-# supressing pushd & popd default 'print stack'
+# supressing pushd and popd the default "print stack" when called 
 
 pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
@@ -21,7 +21,7 @@ pkg_status(){
 			# to stdout (file descriptor #1)	
 
 			command -v $@ >/dev/null 2>&1 || { XPKG_CHK=1;}
-			if [ $XCLIP_CHK -eq 0 ];
+			if [ $XPKG_CHK -eq 0 ];
 			then
 				apt-cache policy xclip
 			else	
