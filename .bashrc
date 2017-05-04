@@ -9,11 +9,10 @@
   blu=$'\e[1;34m'
   mag=$'\e[1;35m'
   cyn=$'\e[1;36m'
-  #ha! finish with dat  
+#ha! finish with dat  
   end=$'\e[0m'
-  #ha! random pallet [1-255] end the operation with \m & end to close color 
+#ha! random pallet [1-255] end the operation with \m & end to close color 
   rnd=$'\e[38;05;'
-
 
 # supressing pushd and popd the default "print stack" when called 
 
@@ -21,13 +20,14 @@ pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
 
 pkg_status(){
+# lembrar de usar no cmd ... depois apagar daqui 
 # require sudo permission which sucks!	
 # dpkg-query -W -f='${Status}' MYPACKAGE | grep -q -P '^install ok installed$'; echo $?
 # VAL=$(dpkg-query -W -f='${Status}' $@ 2>/dev/null | grep -c "ok installed")
 		
 		local qualPacote=$1
-		
-			local XPKG_CHK=0;
+	      #----------------------
+			local XPKG_CHK=0;   #flag ... 
 			# dont require sudo permissions
 			# 2>&1 :Passing stderr (2) over "-v" pipe along with stdout (1)
 			# by redirecting the stderr stream (file descriptor #2)
@@ -36,6 +36,7 @@ pkg_status(){
 			command -v $qualPacote >/dev/null 2>&1 || { XPKG_CHK=1;}
 			if [ $XPKG_CHK -eq 0 ];
 			then
+				#TOP 
 				apt-cache policy xclip;
 			else	
 				read -r -p "Pakage not found... Do you want to install it [Y/n]? " response
@@ -90,6 +91,7 @@ popd;
 # looks bad!!! ver depois ...
 txt(){
 	# init function: creat text folder the first time txt() is called.
+	# lame but get the job done ...
 	pushd ~/Desktop;
 	if [ ! -d ~/Desktop/txts ]; then 
 		mkdir txts
@@ -105,22 +107,14 @@ txt(){
 	VAR=$@;
 if [[ -z $VAR ]]; then
         VAR=$(xclip -o);
-	echo ${yel}________________________________________________________________________ 
-		printf "\n"
-			xclip -o;
-		printf "\n"
-	echo ________________________________________________________________________ ${end}
-	printf "\n"
-		ls -a | grep ".txt";
-	printf "\n"
-		read -p "which .txt file?${end} ${cyn}(or just) type a name: ${end}:" -r nome;
+	echo ${yel}; printf "\n";     xclip -o;      printf "\n"; echo ${end};
+	
+	printf "\n";   		ls -a | grep ".txt"; 		printf "\n";
+
+	read -p "which .txt file?${end} ${cyn}(or just) type a name: ${end}:" -r nome;
 	xclip -o >> $nome.txt;
 else 
-	echo ${yel}________________________________________________________________________
-	printf "\n"
-		echo $VAR 
-	printf "\n"
-	echo ________________________________________________________________________ ${end}
+	echo ${yel}; printf "\n";      echo $VAR    printf "\n";  echo ${end};
 	printf "\n"
 		ls -a | grep ".txt";
 	printf "\n"
@@ -339,7 +333,7 @@ alias py='python'
 alias desk='cd ~/Desktop'
 alias editcmd='nvim ~/Desktop/dotFiles/commands.txt'
 alias rsetcolor='echo ${end}'
-cmt(){ command git commit -m "$@" }
+cmt(){  command git commit -m "$@"; }
 alias pullFoldrs='cd ~/Desktop/gits'
 alias s="git status -s"
 alias _rmbashSwp='rm ~/.local/share/nvim/swap//%home%mrs-magooo%.bashrc.swp'
