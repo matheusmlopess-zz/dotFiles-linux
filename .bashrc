@@ -181,6 +181,7 @@ git_commit(){
 
 
 		git add .bashrc
+		git add temp/
 
 		github_ssh
 			
