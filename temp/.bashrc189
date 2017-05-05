@@ -417,6 +417,7 @@ alias rsetcolor='echo ${end}'
 cmt(){  command git commit -m "\"'$@'\"";  }
 alias pullFoldrs='cd ~/Desktop/gits'
 alias s="git status -s"
+alias _rmbashSwp='rm ~/.local/share/nvim/swap//%home%mrs-magooo%.bashrc.swp'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
