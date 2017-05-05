@@ -19,39 +19,6 @@
 pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
 
-
-github_ssh(){
-
-	local SSH_CHK=$(eval "git remote -v");
-
-		if [[ $SSH_CHK == *"git@github.com:matheusmlopess"* ]]; then
-	  		echo "ssh checked and all good! ...:"
-			git remote -v;
-		elif [[ $SSH_CHK == *"https://github.com/matheusmlopess"* ]];then
-			
-			repository=${PWD##*/}
- 			        read -p "is ('$repository' ) the right github repository [Y/n]" -r YesNo; 
-				case "$YesNo" in
-					[yY][eE][sS]|[yY]) 
-					
-					git remote set-url origin git@github.com:matheusmlopess/$repository.git
-			                echo "All good now... ssh set and running"
-					git remote -v;
-					;;
-					*)
-				       	read -p " Respository name (clone path) :" -r respositoryname 
-					git remote set-url origin git@github.com:matheusmlopess/$repositoryname.git
-					echo "All good now... ssh set and running"
-					git remote -v 
-					;;
-				esac
-
-		else
-			git remote -v;
-		fi
-}
-
-
 pkg_status(){
 # lembrar de usar no cmd ... depois apagar daqui 
 # require sudo permission which sucks!	
@@ -84,6 +51,7 @@ pkg_status(){
 			fi
 
 }
+
 # salva conteudo do clipboard em pasta dedicada --> ~/Desktop/dotFiles
 cmd(){
 	# init function: creat cmd folder the first time cmd() is called.
@@ -118,11 +86,11 @@ cmd(){
 fi
 popd;
 }
+
 # looks bad!!! ver depois ...
 txt(){
 	# init function: creat text folder the first time txt() is called.
 	# lame but get the job done ...
-
 	pushd ~/Desktop;
 	if [ ! -d ~/Desktop/txts ]; then 
 		mkdir txts
@@ -142,9 +110,7 @@ if [[ -z $VAR ]]; then
 
 	read -p "which .txt file?${end} ${cyn}(or just) type a name: ${end}:" -r nome;
 	xclip -o >> $nome.txt;
-	
 else 
-	
 	echo ${yel};     echo $VAR  		  printf "\n";  echo ${end};
 		         ls -a | grep ".txt";     printf "\n";
 			 
@@ -154,49 +120,37 @@ fi
 	popd;
 }
 
-git_commit(){
-	pushd ~/Desktop;
-	
-	local MSG="";
 
-		if [ ! -d ~/Desktop/gits ]; then
+git_commit(){
+	pushd ~/Desktop
+	local MSG="";
+		if[! -d ~/Desktop/gits]; then
 			mkdir gits && chmod 700 ~/Desktop/gits
 			git clone https://github.com/matheusmlopess/dotFiles-linux.git 
-		else
-			command cd gits;
 		fi
+		
 
-
-	if [[ -z "$@" ]]; then
-	 	echo "u ain't got no commits, get outta here!";
-
-	elif [[ $1 -eq "bashrc" ]]
-	then 
+	if [[ -z "$@" ]]
+	 	echo "u ain't got no commits, get outta here!"
+	elif [ $1 -eq "bashrc" ]
 		cd dotFiles-linux;
-		local NUM=$[ ($RANDOM % 999) +1 ];
-		ls -la
-		mv .bashrc temp/.bashrc$NUM;
-		command cp $HOME/.bashrc .
-
-
+		cp ~./bashrc .
 		git add .bashrc
-
-		github_ssh
-			
+			SSH_CHK=$(eval "git remote -v")
+			if [ strpos($SSH_CHK, 'git@github.com')  ]
+			   echo $SSH_CHK
+			fi
+			 			
 			while [ -z "$MSG" ]; do
 				read -p "commit msg: " -r MSG;
 				#shit solution... f"$%"# it
-				if [[ ! -n "$MSG" ]]; then
+				if[[ ! -n "$MSG" ]]; then
 				 	echo "shit son! empty message! try again ..."
 				fi
 			done;
-
-		echo "git commit -m \"'$MSG'\""
-		git commit -m \"'$MSG'\";
+		echo "git commit '$MSG'"
+		git commit -m "$MSG"
 		git push origin master
-
-	else
-		echo "okay"
 		
 	fi
 	
@@ -413,7 +367,7 @@ alias py='python'
 alias desk='cd ~/Desktop'
 alias editcmd='nvim ~/Desktop/dotFiles/commands.txt'
 alias rsetcolor='echo ${end}'
-cmt(){  command git commit -m "\"'$@'\"";  }
+cmt(){  command git commit -m "$@"; }
 alias pullFoldrs='cd ~/Desktop/gits'
 alias s="git status -s"
 alias _rmbashSwp='rm ~/.local/share/nvim/swap//%home%mrs-magooo%.bashrc.swp'
