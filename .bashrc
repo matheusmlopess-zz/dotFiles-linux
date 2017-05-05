@@ -194,7 +194,7 @@ git_commit(){
 
 		echo "git commit -m $MSG"
 
-		git commit -m \"'$MSG'\";
+		git commit -m \"$MSG\";
 		git push origin master
 
 	else
