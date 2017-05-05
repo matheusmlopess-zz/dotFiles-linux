@@ -179,10 +179,8 @@ git_commit(){
 		mv .bashrc temp/.bashrc$NUM;
 		command cp $HOME/.bashrc .
 
-
 		git add .bashrc
 		git add temp/
-
 		github_ssh
 			
 			while [ -z "$MSG" ]; do
@@ -199,7 +197,7 @@ git_commit(){
 		git push origin master
 
 	else
-		echo "okay"
+		echo "nothing to do here son!"
 		
 	fi
 	
