@@ -2,7 +2,8 @@
 #----------------------------------------------------------------------
 #                                CustoM
 #----------------------------------------------------------------------
-# global colors var's...
+# global var's...
+
   red=$'\e[1;31m'
   grn=$'\e[1;32m'
   yel=$'\e[1;33m'
@@ -191,7 +192,8 @@ git_commit(){
 				fi
 			done;
 
-		echo "git commit -m \"'$MSG'\""
+		echo "git commit -m $MSG"
+
 		git commit -m \"'$MSG'\";
 		git push origin master
 
