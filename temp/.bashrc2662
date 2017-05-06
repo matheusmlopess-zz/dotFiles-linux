@@ -113,11 +113,12 @@ pkg_status(){
 			# 2>&1 :Passing stderr (2) over "-v" pipe along with stdout (1)
 			# by redirecting the stderr stream (file descriptor #2)
 			# to stdout (file descriptor #1)	
+			echo $qualPacote;
 			command -v $qualPacote >/dev/null 2>&1 || { XPKG_CHK=1;}
 			if [ $XPKG_CHK -eq 0 ];
 			then
 				#TOP 
-				apt-cache policy ${qualPacote};
+				apt-cache policy xclip;
 			else	
 				read -r -p "Pakage not found... Do you want to install it [Y/n]? " response
 				case "$response" in
@@ -125,7 +126,7 @@ pkg_status(){
 						sudo apt-get install $qualPacote;
 					;;
 					*)
-						echo okay fine ...;	
+						exit 1;	
 				        ;;
 				esac
 			fi
