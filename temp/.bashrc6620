@@ -309,6 +309,7 @@ tmcolor(){
 	fi
 #clear
 }
+tmcolor
 
 _restartWifiHrdwar(){
 	dmesg | tail ;
