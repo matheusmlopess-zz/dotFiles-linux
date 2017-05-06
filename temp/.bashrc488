@@ -295,35 +295,6 @@ git_commit(){
 	popd;
 }
 
-tmcolor(){
-	VAR=$@;
-	echo $VAR
-	if [[ -z $VAR ]]; then
-		export PS1='\[\033[01;48m\] ~$(pwd)〉\033[0m \n$ '
-	#fi
-	else	
-	#if [ "$VAR" == "f" ]; then
-		NUM=$[ ( $RANDOM % 37 ) + 30 ];
-	#	echo numero tmcolor $NUM
-		export PS1='$\e${NUM}m~$(pwd)〉${end}\n$ '
-	fi
-#clear
-}
-tmcolor
-
-_restartWifiHrdwar(){
-	dmesg | tail ;
-		      echo "Wifi HW turning off ..."
-		       sudo iwconfig 'wlp3s0' txpower off
-		      echo "Wifi HW turning on!"
-		       sudo iwconfig 'wlp3s0' txpower auto 
-		      sleep 0.25
-    		       sudo iwconfig 'wlp3s0' power off
-		      echo "Restatrting NetworkManager ..."
-		       sudo systemctl restart NetworkManager
-  		      echo "NetworkManager restored ..."
- }
-
 #vundle like mananger, for pakages.
 system_chk(){
 	pushd ~/Desktop;
@@ -452,9 +423,61 @@ fi
 #----------------------------------------------------------------------
 #                              CustoM
 #----------------------------------------------------------------------
+
+# colored GCC warnings and errors
+# export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+
 # Overwintering configuração prévia do prompt
 # Custom prompt (PS1) - tmcolor $@ - configura para cor aleatória da palet de 255 cores do xterm/gnome terminal
+tmcolor(){
+	VAR=$@;
+	echo $VAR
+	if [[ -z $VAR ]]; then
+		export PS1='\[\033[01;48m\] ~$(pwd)〉\033[0m \n$ '
+	#fi
+	else	
+	#if [ "$VAR" == "f" ]; then
+		NUM=$[ ( $RANDOM % 37 ) + 30 ];
+	#	echo numero tmcolor $NUM
+		export PS1='$\e${NUM}m~$(pwd)〉${end}\n$ '
+	fi
+#clear
+}
 tmcolor
+
+_restartWifiHrdwar(){
+	#set -x
+	dmesg | tail ;
+
+	#sudo lshw -C network   # driver=iwlwifi
+	#sudo modprobe -r iwlwifi && sudo modprobe iwlwifi
+
+	#ou
+
+	#sudo rmmod ipw2100
+	#sudo modprobe ipw2100
+	       #sleep 0.25
+	       #sudo ifconfig 'wlp3s0' down
+	       #sudo ifconfig 'wlp3s0' up
+	              #sleep 0.257
+		      echo "Wifi HW turning off ..."
+		      sudo iwconfig 'wlp3s0' txpower off
+		      echo "Wifi HW turning on!"
+		      sudo iwconfig 'wlp3s0' txpower auto 
+		             #sleep 0.25
+			     #sudo rfkill block wifi
+			     #sudo rfkill unblock wifi
+			            sleep 0.25
+				    sudo iwconfig 'wlp3s0' power off
+				           echo "Restatrting NetworkManager ..."
+					   sudo systemctl restart NetworkManager
+					   echo "NetworkManager restored ..."
+					          #sleep 0.25
+						  #sudo systemctl restart NetworkManager
+						  #set +x
+ }
+
 
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/.virtualenvs/pythonProjects/
@@ -489,5 +512,49 @@ alias hide_icons='ls ~/Desktop > ~/Desktop/.hidden'
 alias show_icons='rm ~/Desktop/.hidden'
 cd(){	command cd $1 && l && printf "\n"; }
 alias gits='cd ~/Desktop/gits'
-cmdisplay(){	cat ~/Desktop/gits/dotFiles-linux/commands.txt;     }
+
+cmdisplay(){
+	pushd ~/Desktop/dotFiles;
+	cat commands.txt;
+	popd;
+}
+
+_ckdir(){
+
+if [ -d "$@" ]; then
+  # Control will enter here if $DIRECTORY exists.
+	ls -a $@
+fi
+
+}
+
+bashPull(){
+	pushd $HOME;
+	echo "--> Dir:`pwd`"
+	if [ -f ~/.bashrc ]; then
+	    echo "File found!"
+	fi
+
+ 	pushd ~/Desktop/gits/dotFiles-linux;
+		ls -d .?*;
+
+
+
+
+	popd;
+}
+
+bashPush(){
+
+	echo " " 
+}
+
+#eval $(echo "no:global default;fi:normal file;di:directory;ln:symbolic link;pi:named pipe;so:socket;do:door;bd:block device;cd:character device;or:orphan symlink;mi:missing file;su:set uid;sg:set gid;tw:sticky other writable;ow:other writable;st:sticky;ex:executable;"|sed -e 's/:/="/g; s/\;/"\n/g')           
+#{      
+ # IFS=:     
+  #for i in $LS_COLORS     
+  #do        
+  #  echo -e "\e[${i#*=}m$( x=${i%=*}; [ "${!x}" ] && echo "${!x}" || echo "$x" )\e[m" 
+  #done       
+#} bashrc
 
