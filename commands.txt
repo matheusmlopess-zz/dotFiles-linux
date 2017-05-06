@@ -1,0 +1,1 @@
+[38;05;126m xdg-open /directory
