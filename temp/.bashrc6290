@@ -19,7 +19,6 @@
 pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
 
-#oye! ssh must be configured already ... just saying ...
 github_ssh(){
 
 	local SSH_CHK=$(eval "git remote -v");
@@ -51,7 +50,7 @@ github_ssh(){
 			git remote -v;
 		fi
 }
-#HA!que foi que eu fiz ... -_- borring but super useful 
+
 whatDidIdo(){
 
 	if [ -z  "$@"  ]; then
