@@ -1,0 +1,26 @@
+sudo apt-get install bcmwl-kernel-source
+sudo apt-get install vim neovim
+sudo apt-get install git
+sudo apt-get install elinks lynx w3m
+sudo apt-get install unity-control-center
+sudo apt-get install ppa-purge
+sudo apt-get install blueman bluez:i386 bluetooth
+sudo apt-get install curl
+sudo apt-get install unrar
+sudo apt-get install python3-pip
+sudo apt-get install build-essential cmake
+sudo apt-get install python3 python3-doc
+sudo apt-get install virtualenvwrapper
+sudo apt-get install mysql-server
+sudo apt-get install mongodb
+sudo apt-get install virtualenv
+sudo apt-get install postgresql-client
+sudo apt-get install postgresql postgresql-contrib
+sudo apt-get install pgadmin3
+sudo apt-get install xclip
+sudo apt-get install openssh-server
+sudo apt-get install libmysqlclient-dev
+sudo apt-get install git-all
+sudo apt-get install wicd
+sudo apt-get install wmctrl xdotool
+sudo apt-get install unity
