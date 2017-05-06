@@ -44,10 +44,7 @@ github_ssh(){
 					git remote -v 
 					;;
 				esac
-		elif [[ $1 -eq 0 ]]; then
-			echo Applying ssh new repository permissions ... son!
-			git remote set-url origin git@github.com:matheusmlopess/$2.git
-		else	
+		else
 			git remote -v;
 		fi
 }
@@ -202,7 +199,7 @@ git_commit(){
 	if [[ -z "$@" ]]; then
 	 	echo "u ain't got no commits, get outta here!";
 
-	elif [[ $1 == "bashrc" ]]
+	elif [[ $1 -eq "bashrc" ]]
 	then 
 		cd dotFiles-linux;
 		local NUM=$[ ($RANDOM % 9999) +1 ];
@@ -228,27 +225,21 @@ git_commit(){
 		git push origin master
 
 	else
-		cd $1
-		repository=${PWD##*/}
-		echo $repository
+		repository=${PWD##*/}/
+		git add repository
+		github_ssh
+			while [ -z "$MSG" ]; do
+				read -p "commit msg: " -r MSG;
+				#shit solution... f"$%"# it
+				if [[ ! -n "$MSG" ]]; then
+				 	echo "shit son! empty message! try again ..."
+				fi
+			done;
+	
+		echo "git commit -m $MSG"
 
-		curl -u matheusmlopess:$token https://api.github.com/user/repos -d '{ "name": "'$repository'" }'
-		#git add .
-		#git status
-		#github_ssh 0 $repository
-
-		#	while [ -z "$MSG" ]; do
-		#		read -p "commit msg: " -r MSG;
-		#		#shit solution... f"$%"# it
-		#		if [[ ! -n "$MSG" ]]; then
-		#		 	echo "shit son! empty message! try again ..."
-		#		fi
-		#	done;
-	#
-	#	echo "git commit -m $MSG"
-#
-#		git commit -m "'$MSG'";
-#		git push origin master
+		git commit -m "'$MSG'";
+		git push origin master
 	fi
 	
 	popd;
