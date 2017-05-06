@@ -16,8 +16,10 @@
   rnd=$'\e[38;05;'
 
 # supressing pushd and popd the default "print stack" when called 
+
 pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
+
 
 github_ssh(){
 
@@ -29,7 +31,7 @@ github_ssh(){
 		elif [[ $SSH_CHK == *"https://github.com/matheusmlopess"* ]];then
 			
 			repository=${PWD##*/}
- 			read -p "is ('$repository' ) the right github repository [Y/n]" -r YesNo; 
+ 			        read -p "is ('$repository' ) the right github repository [Y/n]" -r YesNo; 
 				case "$YesNo" in
 					[yY][eE][sS]|[yY]) 
 					
@@ -44,53 +46,10 @@ github_ssh(){
 					git remote -v 
 					;;
 				esac
+
 		else
 			git remote -v;
 		fi
-}
-
-whatDidIdo(){
-
-	if [ -z  "$@"  ]; then
-
-            (zcat $(ls -tr /var/log/apt/history.log*.gz); cat /var/log/apt/history.log) 2>/dev/null | 
-	     egrep '^(Start-Date:|Commandline:)' |
-	     grep -v aptdaemon | 
-	     egrep '^Commandline:' >> ~/Desktop/apt-installed-packge_aux.txt
-	     
-	     while IFS='' read -r line || [[ -n "$line" ]]; do
-		     
-		     if [[ $line == *"apt-get install"* ]]; then
-		     	echo ${line//Commandline:/sudo} ;
-	     	     fi
-
-	     done <  ~/Desktop/apt-installed-packge_aux.txt > ~/Desktop/apt-installed-packge.txt ; rm ~/Desktop/apt-installed-packge_aux.txt 
-        elif [ $1 -eq "bydate" ]; then
-
-	    # (zcat $(ls -tr /var/log/apt/history.log*.gz); cat /var/log/apt/history.log) 2>/dev/null |
-  	    # egrep '^(Start-Date:|Commandline:)' |
-            # grep -v aptdaemon |
-            # egrep '^Commandline:'
-	
-	      (zcat $(ls -tr /var/log/apt/history.log*.gz); cat /var/log/apt/history.log) 2>/dev/null |
-	       egrep '^(Start-Date:|Commandline:)' |
-	       grep -v aptdaemon |
-	       egrep -B1 '^Commandline:' >> ~/Desktop/apt-installed-packge-byDate.txt
-	else
-		echo try: \"whatDidIdo bydate\" mate!
-	fi
-}
-
-loopBack(){
-		while IFS='' read -r line || [[ -n "$line" ]]; do
-    		#	echo "Text read from file: $line"
-			if [[ $line == *"apt-get install"* ]]; then
-				sed -i -e 's/Commandline:/sudo/g' $line
-				echo ${yel} $line ${end}
-			
-			fi
-
-		done < "$1"
 }
 
 
@@ -130,16 +89,16 @@ pkg_status(){
 cmd(){
 	# init function: creat cmd folder the first time cmd() is called.
 	pushd ~/Desktop;
-	if [ ! -d ~/Desktop/gits ]; then 
-		mkdir gits
-		echo "dotFiles directory not found... in $(pwd)"
+	if [ ! -d ~/Desktop/dotFiles ]; then 
+		mkdir dotFiles
+			cd dotFiles;
+			echo " " > commands.txt
+		echo "dotFiles directory not found... & Created in $(pwd)"
 		git clone https://github.com/matheusmlopess/dotFiles-linux.git 
-		cd dotFiles-linux
-		echo " " > commands.txt
-		github_ssh
+		cd dotFiles && ls -laF;
 		return 1;
 	else
-		cd gits/dotFiles-linux
+		cd dotFiles/dotFiles-linux
 	fi
 
    command ls -a;
@@ -160,12 +119,21 @@ cmd(){
 fi
 popd;
 }
-
 # looks bad!!! ver depois ...
 txt(){
-	pushd ~/Desktop;
-	cd gits/txts	
+	# init function: creat text folder the first time txt() is called.
+	# lame but get the job done ...
 
+	pushd ~/Desktop;
+	if [ ! -d ~/Desktop/txts ]; then 
+		mkdir txts
+		echo "Text directory not found... Creating folder and appling permissions"
+		sudo chmod 700 txts
+		echo TEXT files directory created.
+		return 1;
+	else
+		cd txts
+	fi
 
 	local VAR=$@;
 if [[ -z $VAR ]]; then
@@ -206,7 +174,7 @@ git_commit(){
 	elif [[ $1 -eq "bashrc" ]]
 	then 
 		cd dotFiles-linux;
-		local NUM=$[ ($RANDOM % 9999) +1 ];
+		local NUM=$[ ($RANDOM % 999) +1 ];
 		ls -la
 		mv .bashrc temp/.bashrc$NUM;
 		command cp $HOME/.bashrc .
@@ -230,17 +198,23 @@ git_commit(){
 
 	else
 		echo "nothing to do here son!"
+		
 	fi
+	
+
 	popd;
 }
 
-#vundle like mananger, for pakages.
-system_chk(){
+
+
+# First terminal run 
+ 
 	pushd ~/Desktop;
-	if [ ! -d ~/Desktop/gits ]; then
+	if [ ! -d ~/Desktop/dotFiles ]; then
 	#há thats infinitely better ...	
 		pkg_status 'git'
 		pkg_status 'xclip'
+	
 		cmd
 	fi
 
@@ -248,7 +222,7 @@ system_chk(){
 		txt
 	fi
 	popd;
-}
+
 
 #-----------------------------------------------------------------------
 #custom end | ----------------------------------------------------------
@@ -440,7 +414,7 @@ alias py='python'
 alias desk='cd ~/Desktop'
 alias editcmd='nvim ~/Desktop/dotFiles/commands.txt'
 alias rsetcolor='echo ${end}'
-cmt(){  command git commit -m \"'$@'\";  }
+cmt(){  command git commit -m "\"'$@'\"";  }
 alias pullFoldrs='cd ~/Desktop/gits'
 alias s="git status -s"
 alias ll='ls -alF'
@@ -499,6 +473,7 @@ bashPush(){
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion                                                                                                                                                                
 fi
+
 
 function_exists() {
     declare -f -F $1 > /dev/null
