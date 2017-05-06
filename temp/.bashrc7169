@@ -212,7 +212,7 @@ git_commit(){
 	then 
 		cd dotFiles-linux;
 		local NUM=$[ ($RANDOM % 9999) +1 ];
-		ls -la	&& printf "\n"
+		ls -la	&& prinf "\n"
 		mv .bashrc temp/.bashrc$NUM;
 		command cp $HOME/.bashrc .
 		

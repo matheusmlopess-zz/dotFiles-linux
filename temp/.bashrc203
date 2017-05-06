@@ -22,6 +22,7 @@ popd() {       command popd $@ > /dev/null;  }
 github_ssh(){
 
 	local SSH_CHK=$(eval "git remote -v");
+
 		if [[ $SSH_CHK == *"git@github.com:matheusmlopess"* ]]; then
 	  		echo "ssh checked and all good! ...:"
 			git remote -v;
@@ -124,8 +125,6 @@ pkg_status(){
 			fi
 
 }
-
-stringTest(){ read -p "digite qqr coisa : " -r teste;  git commit -m "${teste}"; }
 # salva conteudo do clipboard em pasta dedicada --> ~/Desktop/dotFiles
 cmd(){
 	# init function: creat cmd folder the first time cmd() is called.
@@ -188,8 +187,6 @@ fi
 }
 
 git_commit(){
-	local path=$(pwd);
-	echo $path
 	pushd ~/Desktop;
 	
 	local MSG="";
@@ -212,10 +209,10 @@ git_commit(){
 	then 
 		cd dotFiles-linux;
 		local NUM=$[ ($RANDOM % 9999) +1 ];
-		ls -la	&& printf "\n"
+		ls -la
 		mv .bashrc temp/.bashrc$NUM;
 		command cp $HOME/.bashrc .
-		
+
 		git add .bashrc
 		git add temp/
 		github_ssh
@@ -227,9 +224,10 @@ git_commit(){
 				 	echo "shit son! empty message! try again ..."
 				fi
 			done;
-		
-		printf "\n";
-		git commit -m "${MSG}'";
+
+		echo "git commit -m $MSG"
+
+		git commit -m "'$MSG'";
 		git push origin master
 
 	elif [[ $1 == "new" ]]; then 
@@ -243,7 +241,7 @@ git_commit(){
 				read -p "${grn} Are you sure you entered the name repo correctly:${end} ${yel} \"$repository\" ${end} [y/N] " -r response
 				response=${response,,}    # tolower
 				if [[ "$response" =~ ^(yes|y)$ ]]; then 
-					echo "${grn}*****|_Ok moving on ...${end} "
+					echo "${grn}     Ok moving on ...${end} "
 				else
 					repository="";				
 				fi;
@@ -263,28 +261,21 @@ git_commit(){
 		git status
 		github_ssh 0 $repository
 
-	elif [[ $1 == "." ]]; then
-		cd $path
-		ls -la	&& printf "\n"
-		
-		git add .
-		github_ssh
-			
-			while [ -z "$MSG" ]; do
-				read -p "commit msg: " -r MSG;
-				#shit solution... f"$%"# it
-				if [[ ! -n "$MSG" ]]; then
-				 	echo "shit son! empty message! try again ..."
-				fi
-			done;
-		
-		printf "\n";
-		git commit -m "${MSG}";
-		printf "\n";
-		git push origin master
 	else
-		echo under construction
-	
+
+		echo under contruction
+		#	while [ -z "$MSG" ]; do
+		#		read -p "commit msg: " -r MSG;
+		#		#shit solution... f"$%"# it
+		#		if [[ ! -n "$MSG" ]]; then
+		#		 	echo "shit son! empty message! try again ..."
+		#		fi
+		#	done;
+	#
+	#	echo "git commit -m $MSG"
+#
+#		git commit -m "'$MSG'";
+#		git push origin master
 	fi
 	
 	popd;

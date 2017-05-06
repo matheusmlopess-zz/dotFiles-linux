@@ -22,6 +22,12 @@ popd() {       command popd $@ > /dev/null;  }
 github_ssh(){
 
 	local SSH_CHK=$(eval "git remote -v");
+	printf "\n"
+	echo ${red}
+		pwd	
+	echo ${end}
+	printf "\n"
+
 		if [[ $SSH_CHK == *"git@github.com:matheusmlopess"* ]]; then
 	  		echo "ssh checked and all good! ...:"
 			git remote -v;
@@ -212,7 +218,7 @@ git_commit(){
 	then 
 		cd dotFiles-linux;
 		local NUM=$[ ($RANDOM % 9999) +1 ];
-		ls -la	&& printf "\n"
+		ls -la	&& prinf "\n"
 		mv .bashrc temp/.bashrc$NUM;
 		command cp $HOME/.bashrc .
 		
