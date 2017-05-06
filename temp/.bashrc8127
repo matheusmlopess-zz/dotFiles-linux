@@ -1,6 +1,6 @@
 # ~/.bashrc: executed by bash(1) for non-login shellsdd.
 #----------------------------------------------------------------------
-#                          CustoMe's
+#                                CustoM
 #----------------------------------------------------------------------
 # global var's...
 
@@ -80,15 +80,15 @@ whatDidIdo(){
 	fi
 }
 
-# find subtexts/substrings/strokes in a text file
 loopBack(){
 		while IFS='' read -r line || [[ -n "$line" ]]; do
     		#	echo "Text read from file: $line"
-			if [[ $line == *"S@"* ]]; then
+			if [[ $line == *"apt-get install"* ]]; then
 				sed -i -e 's/Commandline:/sudo/g' $line
 				echo ${yel} $line ${end}
 			
 			fi
+
 		done < "$1"
 }
 
@@ -190,9 +190,6 @@ git_commit(){
 	pushd ~/Desktop;
 	
 	local MSG="";
-	local repository="";
-	local response="";
-	local token="";
 
 		if [ ! -d ~/Desktop/gits ]; then
 			mkdir gits && chmod 700 ~/Desktop/gits
@@ -230,40 +227,16 @@ git_commit(){
 		git commit -m "'$MSG'";
 		git push origin master
 
-	elif [[ $1 == "new" ]]; then 
-
-		while [ -z "$repository" ]; do 
-			
-			read -p " New repo name: " -r repository
-			if [[ ! -n "$repository" ]]; then
-				echo "${mag}   shit son! empty message or typo, try again ...  ${end}"
-			else 
-				read -p "${grn} Are you sure you entered the name repo correctly:${end} ${yel} \"$repository\" ${end} [y/N] " -r response
-				response=${response,,}    # tolower
-				if [[ "$response" =~ ^(yes|y)$ ]]; then 
-					echo "${grn}     Ok moving on ...${end} "
-				else
-					repository="";				
-				fi;
-			fi;
-
-		done;
-
-                token=`openssl enc -aes-256-cbc -d -in ~/.ssh/token.dat`
-		curl -u matheusmlopess:$token https://api.github.com/user/repos -d '{ "name": "'$repository'" }'
-		echo "${blu}"
-		echo "  *****************************************"
-		echo "  **** repo created successfully!! ********"
-		echo "  *****************************************"
-		echo "${end}"
-		echo "${yel} git cloning new repo ... ${end}"
-		git clone https://github.com/matheusmlopess/$repository.git 
-		git status
-		github_ssh 0 $repository
-
 	else
+		cd $1
+		repository=${PWD##*/}
+		echo $repository
 
-		echo under contruction
+		curl -u matheusmlopess:$token https://api.github.com/user/repos -d '{ "name": "'$repository'" }'
+		#git add .
+		#git status
+		#github_ssh 0 $repository
+
 		#	while [ -z "$MSG" ]; do
 		#		read -p "commit msg: " -r MSG;
 		#		#shit solution... f"$%"# it
@@ -497,7 +470,6 @@ alias rs='resize -s 110 100'
 alias hide_icons='ls ~/Desktop > ~/Desktop/.hidden'
 alias show_icons='rm ~/Desktop/.hidden'
 cd(){	command cd $1 && l && printf "\n"; }
-alias gits='cd ~/Desktop/gits'
 
 cmdisplay(){
 	pushd ~/Desktop/dotFiles;
@@ -543,4 +515,20 @@ bashPush(){
   #  echo -e "\e[${i#*=}m$( x=${i%=*}; [ "${!x}" ] && echo "${!x}" || echo "$x" )\e[m" 
   #done       
 #} bashrc
+
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion                                                                                                                                                                
+fi
+
+function_exists() {
+    declare -f -F $1 > /dev/null
+    return $?
+}
+
+for al in `__git_aliases`; do
+    alias g$al="git $al"
+    
+    complete_func=_git_$(__git_aliased_command $al)
+    function_exists $complete_fnc && __git_complete g$al $complete_func
+done
 
