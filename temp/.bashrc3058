@@ -21,12 +21,8 @@ popd() {       command popd $@ > /dev/null;  }
 
 #oye! ssh must be configured already ... just saying ...
 github_ssh(){
-	echo ${yel}
-	local SSH_CHK=$(eval "git remote -v");
-	echo $(pwd)
-	echo ${end}
-	printf "\n"
 
+	local SSH_CHK=$(eval "git remote -v");
 		if [[ $SSH_CHK == *"git@github.com:matheusmlopess"* ]]; then
 	  		echo "ssh checked and all good! ...:"
 			git remote -v;
@@ -48,20 +44,13 @@ github_ssh(){
 					git remote -v 
 					;;
 				esac
-		elif [[ $1 == "0" ]]; then
-			cd $2
+		elif [[ $1 -eq 0 ]]; then
 			echo Applying ssh new repository permissions ... son!
 			git remote set-url origin git@github.com:matheusmlopess/$2.git
-
-			echo ${cyn} ssh permission successfully done: 
-			git remote -v 
-			echo ${end}
-
 		else	
 			git remote -v;
 		fi
 }
-
 #HA!que foi que eu fiz ... -_- borring but super useful 
 whatDidIdo(){
 
@@ -103,8 +92,12 @@ loopBack(){
 		done < "$1"
 }
 
-# :)
+
 pkg_status(){
+# lembrar de usar no cmd ... depois apagar daqui 
+# require sudo permission which sucks!	
+# dpkg-query -W -f='${Status}' MYPACKAGE | grep -q -P '^install ok installed$'; echo $?
+# VAL=$(dpkg-query -W -f='${Status}' $@ 2>/dev/null | grep -c "ok installed")
 		
 		local qualPacote=$1
 	      #----------------------
@@ -133,6 +126,7 @@ pkg_status(){
 
 }
 
+stringTest(){ read -p "digite qqr coisa : " -r teste;  git commit -m "${teste}"; }
 # salva conteudo do clipboard em pasta dedicada --> ~/Desktop/dotFiles
 cmd(){
 	# init function: creat cmd folder the first time cmd() is called.
@@ -168,6 +162,7 @@ fi
 popd;
 }
 
+# looks bad!!! ver depois ...
 txt(){
 	pushd ~/Desktop;
 	cd gits/txts	
@@ -195,6 +190,7 @@ fi
 
 git_commit(){
 	local path=$(pwd);
+	echo $path
 	pushd ~/Desktop;
 	
 	local MSG="";
@@ -238,7 +234,7 @@ git_commit(){
 		git push origin master
 
 	elif [[ $1 == "new" ]]; then 
-		pwd
+
 		while [ -z "$repository" ]; do 
 			
 			read -p " New repo name: " -r repository
@@ -265,9 +261,8 @@ git_commit(){
 		echo "${end}"
 		echo "${yel} git cloning new repo ... ${end}"
 		git clone https://github.com/matheusmlopess/$repository.git 
-		
-		printf "\n"
-		github_ssh 0 ${repository}
+		git status
+		github_ssh 0 $repository
 
 	elif [[ $1 == "." ]]; then
 		cd $path
