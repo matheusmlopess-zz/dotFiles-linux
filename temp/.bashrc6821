@@ -477,7 +477,7 @@ alias py='python'
 alias desk='cd ~/Desktop'
 alias editcmd='nvim ~/Desktop/dotFiles/commands.txt'
 alias rsetcolor='echo ${end}'
-cmt(){  AUX=$@; command git commit -m ${AUX};  }
+cmt(){  command git commit -m \"'$@'\";  }
 alias pullFoldrs='cd ~/Desktop/gits'
 alias s="git status -s"
 alias ll='ls -alF'
