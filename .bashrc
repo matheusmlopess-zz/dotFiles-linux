@@ -96,7 +96,7 @@ loopBack(){
 		while IFS='' read -r line || [[ -n "$line" ]]; do
     		#	echo "Text read from file: $line"
 			if [[ $line == *"S@"* ]]; then
-				sed -i -e 's/Commandline:/sudo/g' $line
+				#sed -i -e 's/Commandline:/sudo/g' $line
 				echo ${yel} $line ${end}
 			
 			fi
