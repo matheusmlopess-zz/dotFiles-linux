@@ -196,7 +196,6 @@ git_commit(){
 	local path=$(pwd);
 	pushd ~/Desktop;
 	
-	local NUM=0;
 	local MSG="";
 	local repository="";
 	local response="";
@@ -288,18 +287,6 @@ git_commit(){
 		git commit -m "${MSG}";
 		printf "\n";
 		git push origin master
-	elif [[ $1 == "clone" ]];then
-		read -p "github username: " -r USER;
-		# curl https://api.github.com/users/$USER/repos?per_page=1000" | grep -o 'git@[^"]*'
-		clonarQual=`curl "https://api.github.com/users/$USER/repos?per_page=1000" | grep -o 'git@[^"]*'`
-
-		
-		for repo in $clonarQual
-		do 
-			NUM	
-			echo $repo
-
-		done;
 	else
 		echo under construction
 	
