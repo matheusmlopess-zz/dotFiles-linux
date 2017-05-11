@@ -289,30 +289,17 @@ git_commit(){
 		git push origin master
 	
 	elif [[ $1 == "clone" ]];then
-
-		if [[ -z $2 ]]; then
-			read -p "github username: " -r USER;
-		else
-			USER="matheusmlopess"
-		fi
-
+		read -p "github username: " -r USER;
 		# curl https://api.github.com/users/$USER/repos?per_page=1000" | grep -o 'git@[^"]*'
 		clonarQual=`curl "https://api.github.com/users/$USER/repos?per_page=1000" | grep -o 'git@[^"]*'`
-		index=0;
 
+		
 		for repo in $clonarQual
 		do 
 			NUMBER=$[ ( $RANDOM % 255 )  + 1 ]
-			#echo ${rnd}${NUMBER}m $repo ${end}
-			LIST[$index]=${repo[$i]}; 
-			echo "GIT REPO [$index]: ${rnd}${NUMBER}m ${repo[$i]} ${end}"
-			index=$(($index+1))
-		done;
+			echo ${rnd}${NUMBER}m $repo ${end}
 
-		read -p " git clone [?] : " -r clonaEsse
-		echo $clonaEsse
-		echo ${LIST[2]}
-		echo git clone ${repo[$clonaEsse]}
+		done;
 	else
 		echo under construction
 	
