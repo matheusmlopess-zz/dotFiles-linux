@@ -293,35 +293,26 @@ git_commit(){
 		if [[ -z $2 ]]; then
 			read -p "github username: " -r USER;
 		else
-			USER=$2
+			USER="matheusmlopess"
 		fi
 
-		curl -i https://api.github.com/matheusmlopess
 		# curl https://api.github.com/users/$USER/repos?per_page=1000" | grep -o 'git@[^"]*'
 		clonarQual=`curl "https://api.github.com/users/$USER/repos?per_page=1000" | grep -o 'git@[^"]*'`
-		description=`curl "https://api.github.com/users/$USER/repos?per_page=1000" | grep 'description'`
 		index=0;
 
 		for repo in $clonarQual
 		do 
-		#	NUMBER=$[ ( $RANDOM % 255 )  + 1 ]
+			NUMBER=$[ ( $RANDOM % 255 )  + 1 ]
 			#echo ${rnd}${NUMBER}m $repo ${end}
 			LIST[$index]=${repo[$i]}; 
-			if (( index%2 == 0 )); then
-				echo "GIT REPO [$index]: ${rnd}11m ${repo[$i]} ${end}"
-				echo "GIT REPO [$index]: ${cyn}11m ${description[$i]} ${end}"
-
-			else
-				echo "GIT REPO [$index]: ${grn} ${repo[$i]} ${end}"
-				echo "GIT REPO [$index]: ${mag}11m ${description[$i]} ${end}"
-
-			fi
-				
+			echo "GIT REPO [$index]: ${rnd}${NUMBER}m ${repo[$i]} ${end}"
 			index=$(($index+1))
 		done;
 
 		read -p " git clone [?] : " -r clonaEsse
-		git clone ${LIST[$clonaEsse]}
+		echo $clonaEsse
+		echo ${LIST[2]}
+		echo git clone ${repo[$clonaEsse]}
 	else
 		echo under construction
 	
