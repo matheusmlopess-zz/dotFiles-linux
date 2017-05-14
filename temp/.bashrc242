@@ -524,4 +524,4 @@ alias show_icons='rm ~/Desktop/.hidden'
 cd(){	command cd $1 && l && printf "\n"; }
 alias gits='cd ~/Desktop/gits'
 cmdisplay(){	cat ~/Desktop/gits/dotFiles-linux/commands.txt;     }
-alias restartTouchPad='synclient TouchpadOff=0'
+
