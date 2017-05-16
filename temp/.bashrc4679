@@ -21,8 +21,7 @@ popd() {       command popd $@ > /dev/null;  }
 
 # Load the shell dotfiles
 
-for file in ~/.{aliases,outros}; do
-	echo $file
+for file in ~/.aliases; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset
