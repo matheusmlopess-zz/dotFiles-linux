@@ -502,4 +502,34 @@ export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/.virtualenvs/pythonProjects/
 export VIRTUALENVWRAPPER_SCRIPT=$HOME/.local/bin/virtualenvwrapper.sh
 source $HOME/.local/bin/virtualenvwrapper.sh
+
 #/usr/local/bin/virtualenvwrapper.sh
+
+# ----------------------------- Aliases --------------------------------------
+# ----------------------------------------------------------------------------
+#
+#alias _bashrc='nvim ~/.bashrc'
+#alias clc='clear'
+#alias _vimrc='vim ~/.vimrc'
+#alias _nvimrc='nvim ~/.config/nvim/init.vim'
+#alias ..='cd ..'
+#alias ...='cd ../../'
+#alias _update='sudo apt-get update'
+#alias _install='sudo apt-get install'
+#alias py='python'
+#alias desk='cd ~/Desktop'
+#alias editcmd='nvim ~/Desktop/dotFiles/commands.txt'
+#alias rsetcolor='echo ${end}'
+#cmt(){  AUX=$@; command git commit -m "${AUX}";  }
+#alias pullFoldrs='cd ~/Desktop/gits'
+#alias s="git status -s"
+#alias ll='ls -alF'
+#alias la='ls -A'
+#alias l='ls -CF'
+#alias rs='resize -s 110 100'
+#alias hide_icons='ls ~/Desktop > ~/Desktop/.hidden'
+#alias show_icons='rm ~/Desktop/.hidden'
+#cd(){	command cd $1 && l && printf "\n"; }
+#alias gits='cd ~/Desktop/gits'
+#cmdisplay(){	cat ~/Desktop/gits/dotFiles-linux/commands.txt;     }
+alias restartTouchPad='synclient TouchpadOff=0'
