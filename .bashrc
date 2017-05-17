@@ -236,7 +236,7 @@ git_commit(){
 				read -p "commit msg: " -r MSG;
 				#shit solution... f"$%"# it
 				if [[ ! -n "$MSG" ]]; then
-				 	echo "shit son! empty message! try again ..."
+				 	echo "shit son! empty message! try it again ..."
 				fi
 			done;
 		
