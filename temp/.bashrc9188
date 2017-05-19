@@ -22,7 +22,7 @@ popd() {       command popd $@ > /dev/null;  }
 # Load the shell dotfiles
 
 for file in ~/.{aliases,outros}; do
-#	echo $file
+	echo $file
 	[ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset
@@ -503,4 +503,3 @@ export PROJECT_HOME=$HOME/.virtualenvs/pythonProjects/
 export VIRTUALENVWRAPPER_SCRIPT=$HOME/.local/bin/virtualenvwrapper.sh
 source $HOME/.local/bin/virtualenvwrapper.sh
 #/usr/local/bin/virtualenvwrapper.sh
-cd(){	command cd $1 && l && printf "\n"; }
