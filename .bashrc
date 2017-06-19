@@ -15,7 +15,7 @@
 #ha! random pallet [1-255] end the operation with \m & end to close color 
   rnd=$'\e[38;05;'
 
-# supressing pushd and popd the default "print stack" when called 
+# supressing pushd and popd default "print stack", when called 
 pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
 
