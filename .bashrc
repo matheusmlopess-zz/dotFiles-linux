@@ -2,7 +2,6 @@
 #----------------------------------------------------------------------
 #                          CustoMe's
 #----------------------------------------------------------------------
-# global var's...
 
   red=$'\e[1;31m'
   grn=$'\e[1;32m'
@@ -138,7 +137,7 @@ pkg_status(){
 
 }
 
-# salva conteudo do clipboard em pasta dedicada --> ~/Desktop/dotFiles
+# REALY BORRING ... next
 cmd(){
 	# init function: creat cmd folder the first time cmd() is called.
 	pushd ~/Desktop;
@@ -173,6 +172,7 @@ fi
 popd;
 }
 
+# OPS I DID IT AGAIN ... BORING command...
 txt(){
 	pushd ~/Desktop;
 	cd gits/txts	
@@ -197,6 +197,7 @@ else
 fi
 	popd;
 }
+
 
 git_commit(){
 	local path=$(pwd);
@@ -307,7 +308,8 @@ git_commit(){
 		clonarQual=`curl "https://api.github.com/users/$USER/repos?per_page=1000" | grep -o 'git@[^"]*'`
 		description=`curl "https://api.github.com/users/$USER/repos?per_page=1000" | grep 'description'`
 		index=0;
-
+		
+		#FIX THAT MUFUKA!.......................................................
 		for repo in $clonarQual
 		do 
 		#	NUMBER=$[ ( $RANDOM % 255 )  + 1 ]
