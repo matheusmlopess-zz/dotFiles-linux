@@ -10,19 +10,17 @@
   blu=$'\e[1;34m'
   mag=$'\e[1;35m'
   cyn=$'\e[1;36m'
-#ha! finish with dat  
   end=$'\e[0m'
-#ha! random pallet [1-255] end the operation with \m & end to close color 
-  rnd=$'\e[38;05;'
+  rnd=$'\e[38;05;'  # end [0-255 rand] with \m - echo or printf
 
-# supressing pushd and popd default "print stack", when called 
+# SUPRESSING pushd & popd DEFAUT "print stack", WHEN CALLED 
 pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
 
-# Load the shell dotfiles
+# LOADING INIT SHELLs/dotfiles
 
 for file in ~/.{aliases,outros}; do
-	echo $file
+	# echo $file
 	[ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset
