@@ -1,1 +1,4 @@
 [38;05;126m xdg-open /directory
+[38;05;7m USER=foo; curl "https://api.github.com/users/$USER/repos?per_page=1000" | grep -o 'git@[^"]*'
+[38;05;86m synclient TouchpadOff=0
+[38;05;11m sudo -H nvim /etc/apt/sources.list

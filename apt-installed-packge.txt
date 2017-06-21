@@ -24,3 +24,4 @@ sudo apt-get install git-all
 sudo apt-get install wicd
 sudo apt-get install wmctrl xdotool
 sudo apt-get install unity
+sudo apt-get install pavucontrol
