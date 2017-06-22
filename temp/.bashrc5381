@@ -2,26 +2,32 @@
 #----------------------------------------------------------------------
 #                          CustoMe's
 #----------------------------------------------------------------------
+# global var's...
+
   red=$'\e[1;31m'
   grn=$'\e[1;32m'
   yel=$'\e[1;33m'
   blu=$'\e[1;34m'
   mag=$'\e[1;35m'
   cyn=$'\e[1;36m'
+#ha! finish with dat  
   end=$'\e[0m'
+#ha! random pallet [1-255] end the operation with \m & end to close color 
   rnd=$'\e[38;05;'
 
-# supressing pushd and popd default "print stack" when called 
+# supressing pushd and popd the default "print stack" when called 
 pushd(){       command pushd $@ > /dev/null; }
 popd() {       command popd $@ > /dev/null;  }
 
-#loading dotfiles
+# Load the shell dotfiles
+
 for file in ~/.{aliases,outros}; do
+#	echo $file
 	[ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset
 
-#ssh already set ...
+#oye! ssh must be configured already ... just saying ...
 github_ssh(){
 	echo ${yel}
 	local SSH_CHK=$(eval "git remote -v");
@@ -64,6 +70,7 @@ github_ssh(){
 		fi
 }
 
+#HA!que foi que eu fiz ... -_- borring but super useful 
 whatDidIdo(){
 
 	if [ -z  "$@"  ]; then
@@ -104,6 +111,7 @@ loopBack(){
 		done < "$1"
 }
 
+# :)
 pkg_status(){
 		
 		local qualPacote=$1
@@ -135,6 +143,7 @@ pkg_status(){
 
 }
 
+# salva conteudo do clipboard em pasta dedicada --> ~/Desktop/dotFiles
 cmd(){
 	# init function: creat cmd folder the first time cmd() is called.
 	pushd ~/Desktop;
